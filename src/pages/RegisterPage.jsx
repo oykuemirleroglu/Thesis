@@ -114,7 +114,7 @@ export default function SignUpPage() {
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-700">
               Sign up
             </h2>
           </div>
@@ -277,7 +277,7 @@ export default function SignUpPage() {
                     d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
                   />
                 </svg>
-               <label className="sr-only">Majority</label>
+                <label className="sr-only">Majority</label>
                 <input
                   type="text"
                   name="majority"

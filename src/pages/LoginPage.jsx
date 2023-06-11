@@ -30,13 +30,13 @@ export default function SignInPage(props) {
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     getRedirectResult(auth)
-        .then((result) => {
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          const user = result.user;
-               localStorage.setItem("uid", user.uid);
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+        localStorage.setItem("uid", user.uid);
         localStorage.setItem(
           "userInfo",
           JSON.stringify({
@@ -53,23 +53,23 @@ export default function SignInPage(props) {
         );
         authCtx.onLogin();
         navigate("/");
-        setRedirecting(false)
-        })
-        .catch((e) => {
-          setRedirecting(false);
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.customData.email;
-          // The AuthCredential type that was used.
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          setError((error) => ({
-            isError: true,
-            errorCode: errorCode,
-            errorMessages: [...error.errorMessages, errorMessage],
-          }));
-        });
-  },[])
+        setRedirecting(false);
+      })
+      .catch((e) => {
+        setRedirecting(false);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        setError((error) => ({
+          isError: true,
+          errorCode: errorCode,
+          errorMessages: [...error.errorMessages, errorMessage],
+        }));
+      });
+  }, []);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -146,7 +146,7 @@ export default function SignInPage(props) {
 
   return (
     <>
-      {redirecting && <RedirectinBanner/>}
+      {redirecting && <RedirectinBanner />}
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>

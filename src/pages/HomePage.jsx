@@ -15,7 +15,7 @@ const HomePage = (props) => {
   };
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [privacyFilter, setPrivacyFilter] = useState('all');
+  const [privacyFilter, setPrivacyFilter] = useState("all");
   const [events, setEvents] = useState([]);
   const [isEventsEmpty, setIsEventsEmpty] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -33,35 +33,37 @@ const HomePage = (props) => {
   };
   useEffect(() => {
     const fetchEvents = async () => {
-      const allEventsSnapshot = await get(child(ref(DatabaseHandler.database), 'events'));
+      const allEventsSnapshot = await get(
+        child(ref(DatabaseHandler.database), "events")
+      );
       const allEvents = allEventsSnapshot.val();
-    
-      const filteredEvents = Object.entries(allEvents).reduce((filtered, [eventId, eventInfo]) => {
-        if (
-          eventInfo.privacy === 'Public' ||
-          eventInfo.creatorName === userInfo.userName ||
-          (eventInfo.participants && eventInfo.participants.includes(userInfo.userName))
-        ) {
-          filtered.push({ ...eventInfo, id: eventId });
-        }
-    
-        return filtered;
-      }, []);
-    
+
+      const filteredEvents = Object.entries(allEvents).reduce(
+        (filtered, [eventId, eventInfo]) => {
+          if (
+            eventInfo.privacy === "Public" ||
+            eventInfo.creatorName === userInfo.userName ||
+            (eventInfo.participants &&
+              eventInfo.participants.includes(userInfo.userName))
+          ) {
+            filtered.push({ ...eventInfo, id: eventId });
+          }
+
+          return filtered;
+        },
+        []
+      );
+
       setEvents(filteredEvents);
       setIsEventsEmpty(filteredEvents.length === 0);
       setLoading(false);
     };
-    
-      fetchEvents();
- 
-      
-    
+
+    fetchEvents();
   }, []);
 
- 
-  const filteredEvents = events.filter(event => {
-    if (privacyFilter === 'all') return true;
+  const filteredEvents = events.filter((event) => {
+    if (privacyFilter === "all") return true;
     return event.privacy === privacyFilter;
   });
   return (
@@ -88,7 +90,7 @@ const HomePage = (props) => {
                 <div className="px-4 py-8 sm:px-0">
                   <div className="flex justify-around">
                     <Link to="/createPoll">
-                      <button className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-black bg-green-500 rounded-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <button className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-black bg-green-500 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Create New Event
                       </button>
                     </Link>
@@ -110,13 +112,19 @@ const HomePage = (props) => {
               </div>
 
               <div className="my-4">
-        <label className="mr-2" htmlFor="privacyFilter">Filter by privacy:</label>
-        <select id="privacyFilter" value={privacyFilter} onChange={handlePrivacyFilterChange}>
-          <option value="all">All</option>
-          <option value="Public">Public</option>
-          <option value="Private">Private</option>
-        </select>
-      </div>
+                <label className="mr-2" htmlFor="privacyFilter">
+                  Filter by privacy:
+                </label>
+                <select
+                  id="privacyFilter"
+                  value={privacyFilter}
+                  onChange={handlePrivacyFilterChange}
+                >
+                  <option value="all">All</option>
+                  <option value="Public">Public</option>
+                  <option value="Private">Private</option>
+                </select>
+              </div>
               {loading ? (
                 <Banner message={"Your events/meetings loading..."} />
               ) : (
@@ -125,12 +133,14 @@ const HomePage = (props) => {
                   className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 container"
                 >
                   {!isEventsEmpty ? (
-filteredEvents.map((event, index) => (
-  <li key={index} className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200 cursor-pointer">
-    <EventCard event={event} />
-  </li>
-))
-
+                    filteredEvents.map((event, index) => (
+                      <li
+                        key={index}
+                        className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200 cursor-pointer"
+                      >
+                        <EventCard event={event} />
+                      </li>
+                    ))
                   ) : (
                     <p>You have no event yet.</p>
                   )}
@@ -157,7 +167,9 @@ filteredEvents.map((event, index) => (
                     <span className="block text-white">
                       Schedule your all events
                     </span>
-                    <span className="block text-gray-300">from one platform</span>
+                    <span className="block text-gray-300">
+                      from one platform
+                    </span>
                   </h1>
                   <p className="mt-6 max-w-lg mx-auto text-center text-xl text-gray-300 sm:max-w-3xl">
                     By planning your events on our site, you will be able to

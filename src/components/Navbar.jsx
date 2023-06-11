@@ -21,13 +21,13 @@ const Navbar = (props) => {
   const unAuthorized = [
     <div>
       <Link to="/registerPage">
-        <button className="inline-flex items-center px-3 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-black bg-green-700 rounded-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <button className="inline-flex items-center px-3 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-black bg-green-500 rounded-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           Sign Up
         </button>
       </Link>
       &nbsp;
       <Link to="/loginPage">
-        <button className="inline-flex items-center px-3 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-black bg-red-700 rounded-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <button className="inline-flex items-center px-3 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-black bg-red-500 rounded-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           Login
           {props.userName}
         </button>
@@ -38,7 +38,7 @@ const Navbar = (props) => {
   const authorized = [
     <div className="flex">
       <Link to="/createPoll">
-        <button className=" px-2 py-1 border-transparent text-base font-medium rounded-md text-black bg-red-700 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <button className=" px-2 py-1 border-transparent text-base font-medium rounded-md text-black bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           Create New Event
         </button>
       </Link>
@@ -48,11 +48,7 @@ const Navbar = (props) => {
           <div>
             <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
               <span className="sr-only">Open user menu</span>
-              <img
-                className="h-8 w-8 rounded-full"
-                src={image}
-                alt=""
-              />
+              <img className="h-8 w-8 rounded-full" src={image} alt="" />
             </Menu.Button>
           </div>
           <Transition
@@ -110,8 +106,7 @@ const Navbar = (props) => {
                 </Disclosure.Button>
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex-shrink-0 flex items-center">
-                </div>
+                <div className="flex-shrink-0 flex items-center"></div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (

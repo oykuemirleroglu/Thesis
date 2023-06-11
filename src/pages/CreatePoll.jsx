@@ -22,19 +22,18 @@ const CreatePoll = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
-  const [eventPrivacy, setEventPrivacy] = useState('');
+  const [eventPrivacy, setEventPrivacy] = useState("");
 
-  const[optError,setOptError] = useState(false);
-  const[optHoursError,setOptHoursError] = useState(false);
+  const [optError, setOptError] = useState(false);
+  const [optHoursError, setOptHoursError] = useState(false);
   var err = false;
-  useEffect(async ()=>{
+  useEffect(async () => {
     console.log(userInfo["userName"]);
     var res = await SocialHandler.getFriends(userInfo["userName"]);
-    
+
     setFriends(res);
     setIsLoading(false);
-  },[])
-
+  }, []);
 
   let counter = 0; // might think different way later...
 
@@ -51,7 +50,7 @@ const CreatePoll = () => {
   const [enteredStartDate, setEnteredStartDate] = useState();
   const startDateChangeHandler = (event) => {
     setEnteredStartDate(event.target.value);
-    console.log(event.target.value)
+    console.log(event.target.value);
     setIsOptionDateError(false);
   };
   const [enteredLocation, setEnteredLocation] = useState("");
@@ -60,21 +59,22 @@ const CreatePoll = () => {
   };
 
   const focusHandler = () => {
-    setIsFocused(true)
-  }
+    setIsFocused(true);
+  };
   const handlePrivacyChange = (e) => {
     setEventPrivacy(e.target.value);
-};
+  };
 
   const addHandler = (friend) => {
-    if(textParticipant[textParticipant.length - 1] != "," && textParticipant.length != 0){
-      setTextParticipant((prev)=> prev+`,${friend},`)
-    }else{
-      setTextParticipant((prev)=> prev+`${friend},`)
+    if (
+      textParticipant[textParticipant.length - 1] != "," &&
+      textParticipant.length != 0
+    ) {
+      setTextParticipant((prev) => prev + `,${friend},`);
+    } else {
+      setTextParticipant((prev) => prev + `${friend},`);
     }
-    
-    
-  }
+  };
 
   const addOptionHandler = () => {
     const sTime = localStorage.getItem("startTime");
@@ -82,32 +82,35 @@ const CreatePoll = () => {
     if (
       sTime === undefined ||
       eTime === undefined ||
-      (enteredStartDate === undefined || enteredStartDate === "")
+      enteredStartDate === undefined ||
+      enteredStartDate === ""
     ) {
       setIsOptionDateError(true);
     } else {
       let newOpt = { date: enteredStartDate, startTime: sTime, endTime: eTime };
       options.forEach((option) => {
-        if((option["date"] === enteredStartDate && option["startTime"] === sTime && option["endTime"] === eTime)){
+        if (
+          option["date"] === enteredStartDate &&
+          option["startTime"] === sTime &&
+          option["endTime"] === eTime
+        ) {
           err = true;
-          setOptError(true)
+          setOptError(true);
         }
-      })
-      if(!(err)){
-
-       if(sTime === eTime || sTime > eTime){
+      });
+      if (!err) {
+        if (sTime === eTime || sTime > eTime) {
           setOptHoursError(true);
-       }else{
-        
-        setOptions((values) => [...values, newOpt]);
-        setIsOptionDateError(false);
-        setIsOptionEmpty(false);
-        setIsOptionEmptyError(false);
-        setOptHoursError(false);
-        setOptError(false);
-       }
+        } else {
+          setOptions((values) => [...values, newOpt]);
+          setIsOptionDateError(false);
+          setIsOptionEmpty(false);
+          setIsOptionEmptyError(false);
+          setOptHoursError(false);
+          setOptError(false);
+        }
       }
-      
+
       console.log(options);
     }
   };
@@ -131,9 +134,9 @@ const CreatePoll = () => {
   const [enteredParticipants, setEnteredParticipants] = useState({});
   const participantsChangeHandler = (event) => {
     let string = textParticipant;
-    setTextParticipant(event.target.value)
+    setTextParticipant(event.target.value);
     const array = string.split(",");
-    array.splice(array.length - 1 ,array.length)
+    array.splice(array.length - 1, array.length);
     setEnteredParticipants({ ...array });
   };
 
@@ -166,30 +169,27 @@ const CreatePoll = () => {
       setIsOptionEmptyError(true);
     } else {
       var array = textParticipant.split(",");
-      console.log(array.splice(array.length - 1,array.length))
+      console.log(array.splice(array.length - 1, array.length));
       let poll = {
         creatorName: userInfo.userName,
         title: enteredTitle,
         description: enteredDescription,
         location: enteredLocation,
-        privacy: eventPrivacy, 
+        privacy: eventPrivacy,
         checkBox1: cb1,
         isOpen: true,
         limit: enteredLimit,
         hideParticipants: cb3,
-        participants: (array),
+        participants: array,
         options: options,
       };
-      Object.keys(poll.options).forEach((key)=> poll.options[key]["creatorName"] = userInfo.userName)
+      Object.keys(poll.options).forEach(
+        (key) => (poll.options[key]["creatorName"] = userInfo.userName)
+      );
       DatabaseHandler.createEvent(poll);
       setShowMessage(true);
     }
   };
-
-
-
-
-
 
   return (
     <div>
@@ -223,19 +223,20 @@ const CreatePoll = () => {
             </div>
 
             <div className="sm:col-span-6">
-  <label htmlFor="Privacy" className="block text-sm font-medium text-gray-700">
-    Privacy
-  </label>
-  <div className="mt-1 flex rounded-md shadow-sm">
-  <select onChange={handlePrivacyChange}>
-  <option value="">Select...</option>
-  <option value="Private">Private</option>
-  <option value="Public">Public</option>
-</select>
-
-  </div>
-</div>
-
+              <label
+                htmlFor="Privacy"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Privacy
+              </label>
+              <div className="mt-1 flex rounded-md shadow-sm">
+                <select onChange={handlePrivacyChange}>
+                  <option value="">Select...</option>
+                  <option value="Private">Private</option>
+                  <option value="Public">Public</option>
+                </select>
+              </div>
+            </div>
 
             <div className="sm:col-span-6">
               <label
@@ -278,29 +279,37 @@ const CreatePoll = () => {
               </div>
             </div>
 
-            {eventPrivacy === "Private" &&(
-            <div className="sm:col-span-6">
-              <label
-                htmlFor="Title"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Participants
-              </label>
-              <div className="mt-1 flex rounded-md shadow-sm">
-                <input
-                  type="text"
-                  name="partcpnts"
-                  onFocus={focusHandler}
-                  value={textParticipant}
-                  id="partcpnts"
-                  onChange={participantsChangeHandler}
-                  className="flex-1 focus:ring-indigo-500 border focus:border-indigo-500 block w-full h-8 min-w-0 rounded-md sm:text-sm border-gray-300"
-                />
+            {eventPrivacy === "Private" && (
+              <div className="sm:col-span-6">
+                <label
+                  htmlFor="Title"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Participants
+                </label>
+                <div className="mt-1 flex rounded-md shadow-sm">
+                  <input
+                    type="text"
+                    name="partcpnts"
+                    onFocus={focusHandler}
+                    value={textParticipant}
+                    id="partcpnts"
+                    onChange={participantsChangeHandler}
+                    className="flex-1 focus:ring-indigo-500 border focus:border-indigo-500 block w-full h-8 min-w-0 rounded-md sm:text-sm border-gray-300"
+                  />
+                </div>
+                <div>
+                  {isFocused && (
+                    <FriendLists
+                      isLoading={isLoading}
+                      friends={Object.keys(friends)}
+                      addHandler={addHandler}
+                      participants={textParticipant}
+                    />
+                  )}
+                </div>
               </div>
-              <div>
-              { isFocused && <FriendLists isLoading={isLoading} friends={Object.keys(friends)} addHandler={addHandler} participants={textParticipant}/>}
-              </div>
-            </div>)}
+            )}
           </div>
         </div>
 
@@ -338,7 +347,7 @@ const CreatePoll = () => {
 
           <div className="flex justify-center mt-4 ml-24">
             <button
-              className="flex justify-center py-1 px-2 border border-transparent text-base font-medium rounded-md text-white bg-red-700 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="flex justify-center py-1 px-2 border border-transparent text-base font-medium rounded-md text-black bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="button"
               onClick={addOptionHandler}
             >
@@ -347,9 +356,21 @@ const CreatePoll = () => {
           </div>
         </div>
         {!isOptionEmpty && <DateOptionCard options={options} />}
-        {optError && <Alert title={"Opps!"} messages={["You can not add same option again"]}/>}
-        {optHoursError && <Alert title={"Opps!"} messages={["There is inconsistency with the times."]}/>}
-        {isOptionDateError && <Alert title={"Opps!"} messages={["Please set the date."]}/>}
+        {optError && (
+          <Alert
+            title={"Opps!"}
+            messages={["You can not add same option again"]}
+          />
+        )}
+        {optHoursError && (
+          <Alert
+            title={"Opps!"}
+            messages={["There is inconsistency with the times."]}
+          />
+        )}
+        {isOptionDateError && (
+          <Alert title={"Opps!"} messages={["Please set the date."]} />
+        )}
         {isOptionEmptyError && (
           <Alert
             title="You forgot to add your date options !"
@@ -369,7 +390,7 @@ const CreatePoll = () => {
             <fieldset>
               <div className="mt-4 space-y-4">
                 <div className="relative flex items-start">
-                {/* {<div className="flex items-center h-5">
+                  {/* {<div className="flex items-center h-5">
                     <input
                       id="limitCheckBox"
                       name="limitCheckBox"
@@ -432,14 +453,14 @@ const CreatePoll = () => {
           <div className="flex justify-end">
             <button
               type="button"
-              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-white-700 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               onClick={cancelCreate}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Create Event
             </button>
